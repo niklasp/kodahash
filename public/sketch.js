@@ -82,7 +82,7 @@ function extractValueFromAddress(address, max, start = 0, range = 4) {
   // Return a value between 0 and 255
   // This is done by taking the modulus of 256
 
-  console.log("part", part, "num", num, "num % max", num % max);
+  // console.log("part", part, "num", num, "num % max", num % max);
   return num % max;
 }
 
