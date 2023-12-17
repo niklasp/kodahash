@@ -17,3 +17,30 @@ canvas {
   /* align-items: center; */
   /* display: flex; */
 /* } */
+
+html, body {
+  height: 100%;
+}
+  
+body {
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+  
+#mainCanvas {
+  position: absolute; 
+  z-index: 0; 
+  margin: auto; 
+  top: 0; 
+  left: 0; 
+  background-color: transparent;
+  /* border: 2px solid black; */
+}
+
+#p5_loading {
+  display:none;
+}
