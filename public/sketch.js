@@ -13,10 +13,10 @@ const DEFAULT_HASH_6 =
 
 let hexagonPoints = [];
 let radius = 600;
-let centerX = 1600;
-let centerY = 1600;
+let centerX = 1500;
+let centerY = 1500;
 let angleOffset = 0;
-const size = 3200;
+const size = 3000;
 let backgroundCol = "#fffff5";
 let diffColors;
 let numOfPoints;
@@ -34,41 +34,41 @@ let attributes = {};
 //////////////////////////////////////////////////
 // Object for creation and real-time resize of canvas
 // Good function to create canvas and resize functions. I use this in all examples.
-const C = {
-  loaded: false,
-  prop() {
-    return this.height / this.width;
-  },
-  isLandscape() {
-    return window.innerHeight <= window.innerWidth * this.prop();
-  },
-  resize() {
-    if (this.isLandscape()) {
-      document.getElementById(this.css).style.height = "100%";
-      document.getElementById(this.css).style.removeProperty("width");
-    } else {
-      document.getElementById(this.css).style.removeProperty("height");
-      document.getElementById(this.css).style.width = "100%";
-    }
-  },
-  setSize(w, h, p, css) {
-    (this.width = w), (this.height = h), (this.pD = p), (this.css = css);
-  },
-  createCanvas() {
-    (this.main = createCanvas(size, size, WEBGL)),
-      pixelDensity(this.pD),
-      this.main.id(this.css),
-      this.resize();
-  },
-  save() {
-    save(this.main, hash + ".png");
-  },
-};
-C.setSize(size, size, 1, "mainCanvas");
+// const C = {
+//   loaded: false,
+//   prop() {
+//     return this.height / this.width;
+//   },
+//   isLandscape() {
+//     return window.innerHeight <= window.innerWidth * this.prop();
+//   },
+//   resize() {
+//     if (this.isLandscape()) {
+//       document.getElementById(this.css).style.height = "100%";
+//       document.getElementById(this.css).style.removeProperty("width");
+//     } else {
+//       document.getElementById(this.css).style.removeProperty("height");
+//       document.getElementById(this.css).style.width = "100%";
+//     }
+//   },
+//   setSize(w, h, p, css) {
+//     (this.width = w), (this.height = h), (this.pD = p), (this.css = css);
+//   },
+//   createCanvas() {
+//     (this.main = createCanvas(size, size, WEBGL)),
+//       pixelDensity(this.pD),
+//       this.main.id(this.css),
+//       this.resize();
+//   },
+//   save() {
+//     save(this.main, hash + ".png");
+//   },
+// };
+// C.setSize(size, size, 1, "mainCanvas");
 
-function windowResized() {
-  C.resize();
-}
+// function windowResized() {
+//   C.resize();
+// }
 
 //////////////////////////////////////////////////
 // The example really starts here
@@ -108,14 +108,14 @@ function hashRandom(hash, index) {
 function setupRandomness(hash) {}
 
 function setup() {
-  C.createCanvas();
+  // canvasSize = windowWidth < windowHeight ? windowWidth : windowHeight;
+  createCanvas(size, size, WEBGL);
+  pixelDensity(1);
   angleMode(DEGREES);
 
+  // get the hash from the URL ur use a pseudo hash
   const params = getURLParams();
-
-  // hash = params.hash || DEFAULT_HASH_2;
   hash = params.hash || generateRandomPseudoETHAddress();
-  console.log("your hash is", hash);
 
   numberOfCircles = extractValueFromAddress(hash, 4);
   pointsPerCircle =
@@ -124,10 +124,8 @@ function setup() {
 
   rows = extractValueFromAddress(hash, 7, 20, 9) + 5; //rows
   spacing = (size - 2 * border) / (rows - 1);
-  console.log("rows", rows);
 
   const shape = extractValueFromAddress(hash, 2, 11);
-  console.log("shape", shape);
 
   if (shape === 0) {
     dots = calculateDotsOnCircles();
@@ -142,10 +140,6 @@ function setup() {
   for (let i = 0; i < dots.length; i++) {
     allColors.push(palette[extractValueFromAddress(hash, 5, i % 40, 1)]);
   }
-
-  console.log("allColors", allColors);
-  console.log("pointsPerCircle", pointsPerCircle);
-  console.log("numberOfCircles", numberOfCircles);
 
   noLoop(); // No need to loop since the dots don't change
 }
@@ -189,6 +183,16 @@ function drawDots() {
   attributes.dots_green = countOccurrences(colors, palette[4]);
 
   console.log("attributes", attributes);
+
+  const windowAttributes = [
+    ...Object.keys(attributes).map((key) => {
+      return {
+        display: key,
+        value: attributes[key],
+      };
+    }),
+  ];
+  window.attributes = windowAttributes;
 }
 
 function countOccurrences(array, element) {
