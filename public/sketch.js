@@ -61,8 +61,8 @@ function setup() {
     dots = calculateDotsOnGrid();
   }
 
-  attributes.shape = shape === 0 ? "Circle" : "Grid";
-  attributes.dots = dots.length;
+  attributes.Shape = shape === 0 ? "Circle" : "Grid";
+  attributes.Dots = dots.length;
 
   allColors = [];
   for (let i = 0; i < dots.length; i++) {
@@ -104,11 +104,11 @@ function drawDots() {
     // ellipse(x, y, radius, radius);
   }
 
-  attributes.dots_pink = countOccurrences(colors, palette[0]);
-  attributes.dots_purple = countOccurrences(colors, palette[1]);
-  attributes.dots_cyan = countOccurrences(colors, palette[2]);
-  attributes.dots_lime = countOccurrences(colors, palette[3]);
-  attributes.dots_green = countOccurrences(colors, palette[4]);
+  attributes["Dots Pink"] = countOccurrences(colors, palette[0]);
+  attributes["Dots Purple"] = countOccurrences(colors, palette[1]);
+  attributes["Dots Cyan"] = countOccurrences(colors, palette[2]);
+  attributes["Dots Lime"] = countOccurrences(colors, palette[3]);
+  attributes["Dots Green"] = countOccurrences(colors, palette[4]);
 
   console.log("attributes", attributes);
 
