@@ -1,16 +1,3 @@
-const DEFAULT_HASH_1 =
-  "0x175adf5fc058830a6319b8238ecc911db6e1b8dd40965629b5f0c5bee655598c";
-const DEFAULT_HASH_2 =
-  "0xa3b47cf8e159640f2b8acd89ef4c2d1a7b9e5d2c40172638c9d0e1fab1234567";
-const DEFAULT_HASH =
-  "0x1c2d3a4b5e6f79808765c4b3a29180e2d3c4b5a6e7f890121314151617181920";
-const DEFAULT_HASH_4 =
-  "0xffeeddccbbaa99887766554433221100aabbccddeeff00112233445566778899";
-const DEFAULT_HASH_5 =
-  "0x123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef01";
-const DEFAULT_HASH_6 =
-  "0xdeadbeefcafebabe0123456789abcdef0123456789abcdef0123456789abcdef";
-
 let hexagonPoints = [];
 let radius = 600;
 let centerX = 1500;
@@ -20,58 +7,14 @@ const size = 3000;
 let backgroundCol = "#fffff5";
 let diffColors;
 let numOfPoints;
-const border = 600;
+const border = 680;
 let rows;
 let numberOfCircles = 0;
 const maxRadius = (size - 2 * border) / 2; // Maximum radius within the border
 
 let dots;
-
 let palette = ["#E6007A", "#552BBF", "#00B2FF", "#D3FF33", "#56F39A"];
-
 let attributes = {};
-
-//////////////////////////////////////////////////
-// Object for creation and real-time resize of canvas
-// Good function to create canvas and resize functions. I use this in all examples.
-// const C = {
-//   loaded: false,
-//   prop() {
-//     return this.height / this.width;
-//   },
-//   isLandscape() {
-//     return window.innerHeight <= window.innerWidth * this.prop();
-//   },
-//   resize() {
-//     if (this.isLandscape()) {
-//       document.getElementById(this.css).style.height = "100%";
-//       document.getElementById(this.css).style.removeProperty("width");
-//     } else {
-//       document.getElementById(this.css).style.removeProperty("height");
-//       document.getElementById(this.css).style.width = "100%";
-//     }
-//   },
-//   setSize(w, h, p, css) {
-//     (this.width = w), (this.height = h), (this.pD = p), (this.css = css);
-//   },
-//   createCanvas() {
-//     (this.main = createCanvas(size, size, WEBGL)),
-//       pixelDensity(this.pD),
-//       this.main.id(this.css),
-//       this.resize();
-//   },
-//   save() {
-//     save(this.main, hash + ".png");
-//   },
-// };
-// C.setSize(size, size, 1, "mainCanvas");
-
-// function windowResized() {
-//   C.resize();
-// }
-
-//////////////////////////////////////////////////
-// The example really starts here
 
 function extractValueFromAddress(address, max, start = 0, range = 4) {
   const part = address.substring(2 + start, 2 + start + range); // Skipping '0x' and taking the next range characters
@@ -79,10 +22,7 @@ function extractValueFromAddress(address, max, start = 0, range = 4) {
   // Convert the hexadecimal string to a number
   const num = parseInt(part, 16);
 
-  // Return a value between 0 and 255
-  // This is done by taking the modulus of 256
-
-  // console.log("part", part, "num", num, "num % max", num % max);
+  // Return a value between 0 and max
   return num % max;
 }
 
@@ -94,18 +34,6 @@ function generateRandomPseudoETHAddress() {
   }
   return address;
 }
-function hashRandom(hash, index) {
-  // Simple hash-based pseudo-random number generator
-  // 'index' ensures different values for different calls
-  if (index < 0) {
-    index = 0;
-  }
-  const char = hash.charCodeAt(index % hash.length);
-  const seed = (char * (index + 1)) % 256;
-  return seed / 255;
-}
-
-function setupRandomness(hash) {}
 
 function setup() {
   // canvasSize = windowWidth < windowHeight ? windowWidth : windowHeight;
@@ -261,31 +189,4 @@ function calculateDotsOnCircles() {
   }
 
   return dots;
-}
-
-function selectN(elements, probabilities) {
-  if (elements.length !== probabilities.length) {
-    throw new Error(
-      "The lengths of elements and probabilities arrays must be equal."
-    );
-  }
-
-  const totalProbability = probabilities.reduce((acc, val) => acc + val, 0);
-  if (1.0 - totalProbability > 0.01) {
-    throw new Error(
-      `The sum of probabilities must be 1, not ${totalProbability}`
-    );
-  }
-
-  let cumulativeProbability = 0;
-  const threshold = Math.random();
-  for (let i = 0; i < elements.length; i++) {
-    cumulativeProbability += probabilities[i];
-    if (cumulativeProbability >= threshold) {
-      return elements[i];
-    }
-  }
-
-  // As a fallback, return the last element. This case should not occur if probabilities sum up to 1.
-  return elements[elements.length - 1];
 }
